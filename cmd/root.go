@@ -1,11 +1,15 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 
 	"github.com/spf13/cobra"
 )
+
+const filename = "todos.json"
 
 // Todo is a task to be done.
 type Todo struct {
@@ -20,8 +24,6 @@ func (t *Todo) String() string {
 	return fmt.Sprintf("_\t%s", t.Title)
 }
 
-var todos []Todo
-
 var rootCmd = &cobra.Command{
 	Use:   "todos",
 	Short: "Todo is a CLI application to track your daily todos",
@@ -31,18 +33,40 @@ var rootCmd = &cobra.Command{
 	},
 }
 
-func init() {
-	todos = []Todo{
-		{"Go get groceries", false},
-		{"Finish Go book ch5", false},
-		{"Create my first CLI app with Cobra", true},
-	}
-}
-
 // Execute runs the rootCmd.
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Printf("rootCmd failed: %v\n", err)
 		os.Exit(1)
+	}
+}
+
+// writeToFile writes given list of todos to the specified file.
+func writeToFile(todos []Todo, filename string) error {
+	bytes, err := json.MarshalIndent(todos, "", "  ")
+	if err != nil {
+		return fmt.Errorf("cannot encode todos to json: %v", err)
+	}
+	if err := ioutil.WriteFile("todos.json", bytes, 0644); err != nil {
+		return err
+	}
+	return nil
+}
+
+func readFromFile(filename string) ([]Todo, error) {
+	bytes, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return nil, err
+	}
+	var todos []Todo
+	if err := json.Unmarshal(bytes, &todos); err != nil {
+		return nil, fmt.Errorf("cannot unmarshal to json: %v", err)
+	}
+	return todos, nil
+}
+
+func printTodos(todos []Todo) {
+	for i := 0; i < len(todos); i++ {
+		fmt.Printf("%d: %s\n", i+1, todos[i].String())
 	}
 }
