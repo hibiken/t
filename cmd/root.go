@@ -99,8 +99,13 @@ func addTodo(todo Todo, filename string) error {
 	return nil
 }
 
-func printTodos(todos []Todo) {
-	for i := 0; i < len(todos); i++ {
-		fmt.Printf("%d: %s\n", i+1, todos[i].String())
+func printTodos(todos []Todo, all bool) {
+	i := 1
+	for _, todo := range todos {
+		if !all && todo.Done {
+			continue
+		}
+		fmt.Printf("%d: %s\n", i, todo.String())
+		i++
 	}
 }

@@ -8,7 +8,10 @@ import (
 
 func init() {
 	rootCmd.AddCommand(listCmd)
+	listCmd.Flags().BoolVarP(&allFlag, "all", "a", false, "List all todos including completed ones")
 }
+
+var allFlag bool
 
 var listCmd = &cobra.Command{
 	Use:   "ls",
@@ -19,6 +22,6 @@ var listCmd = &cobra.Command{
 		if err != nil {
 			log.Fatalf("todo ls: %v\n", err)
 		}
-		printTodos(todos)
+		printTodos(todos, allFlag)
 	},
 }
