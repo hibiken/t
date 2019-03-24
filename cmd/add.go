@@ -17,7 +17,7 @@ var addCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		todo := Todo{Title: args[0]}
 		if err := addTodo(todo, filename); err != nil {
-			log.Fatal(err)
+			log.Fatalf("todo add %s: %v\n", args[0], err)
 		}
 	},
 }

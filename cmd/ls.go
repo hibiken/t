@@ -17,7 +17,7 @@ var listCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		todos, err := readFromFile(filename)
 		if err != nil {
-			log.Fatal(err)
+			log.Fatalf("todo ls: %v\n", err)
 		}
 		printTodos(todos)
 	},
