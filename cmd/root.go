@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -22,6 +23,27 @@ func (t *Todo) String() string {
 		return fmt.Sprintf("\u2714\t%s", t.Title)
 	}
 	return fmt.Sprintf("_\t%s", t.Title)
+}
+
+func init() {
+	// check if the file exist.
+	if _, err := os.Stat(filename); err != nil {
+		if !os.IsNotExist(err) {
+			log.Fatal(err)
+		}
+		// create a file and write an empty list.
+		f, err := os.Create(filename)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer f.Close()
+		if _, err := f.WriteString("[]"); err != nil {
+			log.Fatal(err)
+		}
+		if err := f.Sync(); err != nil {
+			log.Fatal(err)
+		}
+	}
 }
 
 var rootCmd = &cobra.Command{
