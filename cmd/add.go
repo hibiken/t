@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/spf13/cobra"
 )
@@ -15,6 +15,9 @@ var addCmd = &cobra.Command{
 	Short: "Adds a new todo item.",
 	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("adding a new todo...")
+		todo := Todo{Title: args[0]}
+		if err := addTodo(todo, filename); err != nil {
+			log.Fatal(err)
+		}
 	},
 }

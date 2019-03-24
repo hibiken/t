@@ -65,6 +65,18 @@ func readFromFile(filename string) ([]Todo, error) {
 	return todos, nil
 }
 
+func addTodo(todo Todo, filename string) error {
+	todos, err := readFromFile(filename)
+	if err != nil {
+		return err
+	}
+	todos = append(todos, todo)
+	if err := writeToFile(todos, filename); err != nil {
+		return err
+	}
+	return nil
+}
+
 func printTodos(todos []Todo) {
 	for i := 0; i < len(todos); i++ {
 		fmt.Printf("%d: %s\n", i+1, todos[i].String())
