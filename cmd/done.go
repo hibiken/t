@@ -19,9 +19,10 @@ var doneCmd = &cobra.Command{
 		if err != nil {
 			log.Fatalf("todos done %s: %v\n", args[0], err)
 		}
-		// TODO(hibiken): find by id
-		if len(todos) > 0 {
-			todos[0].Done = true
+		for i, todo := range todos {
+			if todo.ID == args[0] {
+				todos[i].Done = true
+			}
 		}
 		if err := writeToFile(todos, filename); err != nil {
 			log.Fatalf("todos done %s: %v\n", args[0], err)

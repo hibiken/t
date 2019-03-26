@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/google/uuid"
 	"github.com/spf13/cobra"
 )
 
@@ -14,15 +15,16 @@ const filename = "todos.json"
 
 // Todo is a task to be done.
 type Todo struct {
+	ID    string
 	Title string
 	Done  bool
 }
 
 func (t *Todo) String() string {
 	if t.Done {
-		return fmt.Sprintf("\u2714\t%s", t.Title)
+		return fmt.Sprintf("%s \u2714\t%s", t.ID, t.Title)
 	}
-	return fmt.Sprintf("_\t%s", t.Title)
+	return fmt.Sprintf("%s _\t%s", t.ID, t.Title)
 }
 
 func init() {
@@ -100,12 +102,19 @@ func addTodo(todo Todo, filename string) error {
 }
 
 func printTodos(todos []Todo, all bool) {
-	i := 1
 	for _, todo := range todos {
 		if !all && todo.Done {
 			continue
 		}
-		fmt.Printf("%d: %s\n", i, todo.String())
-		i++
+		fmt.Println(todo.String())
 	}
+}
+
+// generate pseudo unique id
+func genID() (string, error) {
+	id, err := uuid.NewRandom()
+	if err != nil {
+		return "", err
+	}
+	return id.String()[:3], nil
 }
