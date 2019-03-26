@@ -19,9 +19,9 @@ var undoneCmd = &cobra.Command{
 		if err != nil {
 			log.Fatalf("todos undone %s: %v\n", args[0], err)
 		}
-		for i, todo := range todos {
+		for _, todo := range todos {
 			if todo.ID == args[0] {
-				todos[i].Done = false
+				todo.Done = false
 			}
 		}
 		if err := writeToFile(todos, filename); err != nil {

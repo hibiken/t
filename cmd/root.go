@@ -66,7 +66,7 @@ func Execute() {
 }
 
 // writeToFile writes given list of todos to the specified file.
-func writeToFile(todos []Todo, filename string) error {
+func writeToFile(todos []*Todo, filename string) error {
 	bytes, err := json.MarshalIndent(todos, "", "  ")
 	if err != nil {
 		return fmt.Errorf("cannot encode todos to json: %v", err)
@@ -77,19 +77,19 @@ func writeToFile(todos []Todo, filename string) error {
 	return nil
 }
 
-func readFromFile(filename string) ([]Todo, error) {
+func readFromFile(filename string) ([]*Todo, error) {
 	bytes, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return nil, err
 	}
-	var todos []Todo
+	var todos []*Todo
 	if err := json.Unmarshal(bytes, &todos); err != nil {
 		return nil, fmt.Errorf("cannot unmarshal to json: %v", err)
 	}
 	return todos, nil
 }
 
-func addTodo(todo Todo, filename string) error {
+func addTodo(todo *Todo, filename string) error {
 	todos, err := readFromFile(filename)
 	if err != nil {
 		return err
@@ -101,7 +101,7 @@ func addTodo(todo Todo, filename string) error {
 	return nil
 }
 
-func printTodos(todos []Todo, all bool) {
+func printTodos(todos []*Todo, all bool) {
 	for _, todo := range todos {
 		if !all && todo.Done {
 			continue

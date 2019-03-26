@@ -19,7 +19,7 @@ var addCmd = &cobra.Command{
 		if err != nil {
 			log.Fatalf("failed to generate ID: %v\n", err)
 		}
-		todo := Todo{ID: id, Title: args[0]}
+		todo := &Todo{ID: id, Title: args[0]}
 		if err := addTodo(todo, filename); err != nil {
 			log.Fatalf("todo add %s: %v\n", args[0], err)
 		}
