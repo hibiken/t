@@ -8,7 +8,7 @@ import (
 
 var deleteCmd = &cobra.Command{
 	Use:   "delete [id]",
-	Short: "Deletes a task",
+	Short: "Deletes a todo",
 	Args:  cobra.ExactArgs(1),
 	Run: func(_ *cobra.Command, args []string) {
 		todos, err := readFromFile(filename)

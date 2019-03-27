@@ -25,8 +25,8 @@ func (t *Todo) String() string {
 }
 
 var rootCmd = &cobra.Command{
-	Use:   "todos",
-	Short: "Todo is a CLI application to track your daily todos",
+	Use:   "t",
+	Short: "t is a CLI application to track your daily todos",
 	Long:  "A simple todo application in command line.",
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		// Do not run this pre-run for the following commands.
@@ -40,7 +40,7 @@ var rootCmd = &cobra.Command{
 		if _, err := os.Stat(filename); err != nil {
 			if os.IsNotExist(err) {
 				fmt.Println("Error: Todos not initialized")
-				fmt.Println("Run 'todos init' at the root of your project.")
+				fmt.Println("Run 't init' at the root of your project.")
 				os.Exit(1)
 			}
 			log.Fatal(err)

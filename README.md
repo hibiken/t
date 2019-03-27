@@ -1,46 +1,46 @@
-# Todos
-a command-line tool to manage tasks for a project.
+# t
+a command-line tool to manage todos for a project.
 
 ## Install
 ```shell
-go get -u github.com/hibiken/todos
+go get -u github.com/hibiken/t
 
-go install github.com/hibiken/todos
+go install github.com/hibiken/t
 ```
 
 
 ## Get Started
 ```shell
-# First initialize todos in current directory
-todos init
+# First initialize t in the current directory, just like `git init` :)
+t init
 
 # Add some todos
-todos add "First thing I need to do today"
-todos add "Second thing I need to do today"
+t add "First thing I need to do today"
+t add "Second thing I need to do today"
 
 # List todos
-todos ls
+t ls
 
 # To see done todos, pass 'all' flag
-todos ls --all
-todos ls -a
+t ls --all
+t ls -a
 
 # Mark todo as done
-todos done [id]
+t done [id]
 
 # Mark todo as undone
-todos undone [id]
+t undone [id]
 
 # Deletes todo
-todos delete [id]
+t delete [id]
 
 # This deletes only done todos
-todos prune
+t prune
 
 # This deletes all todos
-todos clearall
+t clearall
 
 # Run help to get this info
-todos help
-todos --help
+t help
+t --help
 ```
