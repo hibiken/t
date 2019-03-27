@@ -24,31 +24,28 @@ func (t *Todo) String() string {
 	return fmt.Sprintf("%s _\t%s", t.ID, t.Title)
 }
 
-func init() {
-	// check if the file exist.
-	if _, err := os.Stat(filename); err != nil {
-		if !os.IsNotExist(err) {
-			log.Fatal(err)
-		}
-		// create a file and write an empty list.
-		f, err := os.Create(filename)
-		if err != nil {
-			log.Fatal(err)
-		}
-		defer f.Close()
-		if _, err := f.WriteString("[]"); err != nil {
-			log.Fatal(err)
-		}
-		if err := f.Sync(); err != nil {
-			log.Fatal(err)
-		}
-	}
-}
-
 var rootCmd = &cobra.Command{
 	Use:   "todos",
 	Short: "Todo is a CLI application to track your daily todos",
 	Long:  "A simple todo application in command line.",
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		// Do not run this pre-run for the following commands.
+		var whitelist = []string{"init", "help"}
+		for _, c := range whitelist {
+			if cmd.Name() == c {
+				return
+			}
+		}
+		// check if a file exist, if not user hasn't run `todos init`.
+		if _, err := os.Stat(filename); err != nil {
+			if os.IsNotExist(err) {
+				fmt.Println("Error: Todos not initialized")
+				fmt.Println("Run 'todos init' at the root of your project.")
+				os.Exit(1)
+			}
+			log.Fatal(err)
+		}
+	},
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("Hello my todo CLI!")
 	},
