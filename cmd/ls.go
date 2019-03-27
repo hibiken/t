@@ -6,22 +6,22 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func init() {
-	rootCmd.AddCommand(listCmd)
-	listCmd.Flags().BoolVarP(&allFlag, "all", "a", false, "List all todos including completed ones")
-}
-
 var allFlag bool
 
 var listCmd = &cobra.Command{
 	Use:   "ls",
-	Short: "Lists all todo items.",
+	Short: "Lists all todos",
 	Args:  cobra.NoArgs,
-	Run: func(cmd *cobra.Command, args []string) {
+	Run: func(_ *cobra.Command, _ []string) {
 		todos, err := readFromFile(filename)
 		if err != nil {
-			log.Fatalf("todo ls: %v\n", err)
+			log.Fatalf("todos ls: %v\n", err)
 		}
 		printTodos(todos, allFlag)
 	},
+}
+
+func init() {
+	rootCmd.AddCommand(listCmd)
+	listCmd.Flags().BoolVarP(&allFlag, "all", "a", false, "List all todos including completed ones")
 }

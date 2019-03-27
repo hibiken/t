@@ -8,7 +8,7 @@ import (
 
 var pruneCmd = &cobra.Command{
 	Use:   "prune",
-	Short: "Deletes all done todo items",
+	Short: "Deletes only done todos",
 	Args:  cobra.NoArgs,
 	Run: func(_ *cobra.Command, _ []string) {
 		todos, err := readFromFile(filename)
