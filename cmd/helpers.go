@@ -12,9 +12,9 @@ import (
 func writeToFile(todos []*Todo, filename string) error {
 	bytes, err := json.MarshalIndent(todos, "", "  ")
 	if err != nil {
-		return fmt.Errorf("cannot encode todos to json: %v", err)
+		return fmt.Errorf("cannot encode todos to JSON: %v", err)
 	}
-	if err := ioutil.WriteFile("todos.json", bytes, 0644); err != nil {
+	if err := ioutil.WriteFile(filename, bytes, 0644); err != nil {
 		return err
 	}
 	return nil
@@ -28,22 +28,9 @@ func readFromFile(filename string) ([]*Todo, error) {
 	}
 	var todos []*Todo
 	if err := json.Unmarshal(bytes, &todos); err != nil {
-		return nil, fmt.Errorf("cannot unmarshal to json: %v", err)
+		return nil, fmt.Errorf("cannot decode todos from JSON: %v", err)
 	}
 	return todos, nil
-}
-
-// addTodo adds a todo and write the updated list of todos to the file.
-func addTodo(todo *Todo, filename string) error {
-	todos, err := readFromFile(filename)
-	if err != nil {
-		return err
-	}
-	todos = append(todos, todo)
-	if err := writeToFile(todos, filename); err != nil {
-		return err
-	}
-	return nil
 }
 
 // printTodos prints todos. If all is false, it prints only the items with Done
