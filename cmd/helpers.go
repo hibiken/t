@@ -4,6 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"os"
+
+	"github.com/olekukonko/tablewriter"
 
 	"github.com/google/uuid"
 )
@@ -36,12 +39,20 @@ func readFromFile(filename string) ([]*Todo, error) {
 // printTodos prints todos. If all is false, it prints only the items with Done
 // field set to false, otherwise it prints all items in the slice.
 func printTodos(todos []*Todo, all bool) {
-	for _, todo := range todos {
-		if !all && todo.Done {
+	table := tablewriter.NewWriter(os.Stdout)
+	table.SetHeader([]string{"ID", "Title", "Status"})
+	table.SetBorder(false)
+	for _, t := range todos {
+		if !all && t.Done {
 			continue
 		}
-		fmt.Println(todo.String())
+		status := ""
+		if t.Done {
+			status = "  \u2714  "
+		}
+		table.Append([]string{t.ID, t.Title, status})
 	}
+	table.Render()
 }
 
 // genID generates pseudo unique id.
