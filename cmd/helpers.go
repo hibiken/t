@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strconv"
 
 	"github.com/olekukonko/tablewriter"
 )
@@ -53,13 +54,14 @@ func printTodos(todos []*Todo, all bool) {
 	}
 
 	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader([]string{"ID", "Title", "Status", "Age"})
+	table.SetHeader([]string{"ID", "Title", "Status", "Age", "Priority"})
 	table.SetBorder(false)
 	table.SetColumnColor(
 		tablewriter.Colors{tablewriter.Bold, tablewriter.FgHiBlueColor},
 		tablewriter.Colors{tablewriter.Bold, tablewriter.FgCyanColor},
 		tablewriter.Colors{tablewriter.Bold, tablewriter.FgGreenColor},
-		tablewriter.Colors{tablewriter.Bold, tablewriter.FgHiBlackColor})
+		tablewriter.Colors{tablewriter.Bold, tablewriter.FgHiBlackColor},
+		tablewriter.Colors{tablewriter.Bold, tablewriter.FgHiYellowColor})
 
 	for _, t := range todos {
 		if !all && t.Done {
@@ -69,7 +71,7 @@ func printTodos(todos []*Todo, all bool) {
 		if t.Done {
 			status = "   \u2714   "
 		}
-		table.Append([]string{t.ID, t.Title, status, t.Age()})
+		table.Append([]string{t.ID, t.Title, status, t.Age(), strconv.Itoa(t.Priority)})
 	}
 	table.Render()
 }

@@ -11,36 +11,26 @@ import (
 // p0 being the most urgent.
 type priority int
 
-const (
-	p0 priority = iota
-	p1
-	p2
-	p3
-)
-
 // Todo is a task to be done.
 type Todo struct {
 	ID        string
 	Title     string
 	Done      bool
 	CreatedAt time.Time
-	Priority  priority
+	Priority  int
 }
 
 // NewTodo returns a new todo with a given title.
-func NewTodo(title string, pValue int) (*Todo, error) {
+func NewTodo(title string, priority int) (*Todo, error) {
 	id, err := uuid.NewRandom()
 	if err != nil {
 		return nil, err
-	}
-	if pValue < int(p0) || pValue > int(p3) {
-		return nil, fmt.Errorf("invalid priority value %d", pValue)
 	}
 	return &Todo{
 		ID:        id.String()[:3], // Just the first three characters.
 		Title:     title,
 		CreatedAt: time.Now(),
-		Priority:  priority(pValue),
+		Priority:  priority,
 	}, nil
 }
 
