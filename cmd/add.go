@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"log"
+	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -19,7 +20,7 @@ var addCmd = &cobra.Command{
 		if err != nil {
 			log.Fatalf("todos add %s: %v\n", args[0], err)
 		}
-		todos = append(todos, &Todo{ID: id, Title: args[0]})
+		todos = append(todos, &Todo{ID: id, Title: args[0], CreatedAt: time.Now()})
 		if err := writeToFile(todos, filepath); err != nil {
 			log.Fatalf("todos add %s: %v\n", args[0], err)
 		}

@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/user"
 	"path"
+	"time"
 
 	"github.com/spf13/cobra"
 )
@@ -15,9 +16,10 @@ var filepath string
 
 // Todo is a task to be done.
 type Todo struct {
-	ID    string
-	Title string
-	Done  bool
+	ID        string
+	Title     string
+	Done      bool
+	CreatedAt time.Time
 }
 
 var rootCmd = &cobra.Command{
