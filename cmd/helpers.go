@@ -7,8 +7,6 @@ import (
 	"os"
 
 	"github.com/olekukonko/tablewriter"
-
-	"github.com/google/uuid"
 )
 
 // writeToFile writes given list of todos to the specified file.
@@ -69,7 +67,7 @@ func printTodos(todos []*Todo, all bool) {
 		}
 		status := ""
 		if t.Done {
-			status = "  \u2714  "
+			status = "   \u2714   "
 		}
 		table.Append([]string{t.ID, t.Title, status, t.Age()})
 	}
@@ -85,13 +83,4 @@ func filter(todos []*Todo, p func(*Todo) bool) []*Todo {
 		}
 	}
 	return res
-}
-
-// genID generates pseudo unique id.
-func genID() (string, error) {
-	id, err := uuid.NewRandom()
-	if err != nil {
-		return "", err
-	}
-	return id.String()[:3], nil
 }
