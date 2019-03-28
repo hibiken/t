@@ -40,9 +40,20 @@ func readFromFile(filename string) ([]*Todo, error) {
 // field set to false, otherwise it prints all items in the slice.
 func printTodos(todos []*Todo, all bool) {
 	if len(todos) == 0 {
-		fmt.Println("You'are all done 🎉")
+		fmt.Println("There are no todos :)")
 		return
 	}
+	undones := filter(todos, func(t *Todo) bool {
+		return !t.Done
+	})
+	if len(undones) == 0 {
+		fmt.Println("You'are all done 🎉")
+		if !all {
+			return
+		}
+		fmt.Println()
+	}
+
 	table := tablewriter.NewWriter(os.Stdout)
 	table.SetHeader([]string{"ID", "Title", "Status"})
 	table.SetBorder(false)
@@ -61,6 +72,17 @@ func printTodos(todos []*Todo, all bool) {
 		table.Append([]string{t.ID, t.Title, status})
 	}
 	table.Render()
+}
+
+// filter filters todos with a given predicate function p.
+func filter(todos []*Todo, p func(*Todo) bool) []*Todo {
+	var res []*Todo
+	for _, t := range todos {
+		if p(t) {
+			res = append(res, t)
+		}
+	}
+	return res
 }
 
 // genID generates pseudo unique id.
