@@ -55,12 +55,14 @@ func printTodos(todos []*Todo, all bool) {
 	}
 
 	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader([]string{"ID", "Title", "Status"})
+	table.SetHeader([]string{"ID", "Title", "Status", "Age"})
 	table.SetBorder(false)
 	table.SetColumnColor(
 		tablewriter.Colors{tablewriter.Bold, tablewriter.FgHiBlueColor},
 		tablewriter.Colors{tablewriter.Bold, tablewriter.FgCyanColor},
-		tablewriter.Colors{tablewriter.Bold, tablewriter.FgGreenColor})
+		tablewriter.Colors{tablewriter.Bold, tablewriter.FgGreenColor},
+		tablewriter.Colors{tablewriter.Bold, tablewriter.FgHiBlackColor})
+
 	for _, t := range todos {
 		if !all && t.Done {
 			continue
@@ -69,7 +71,7 @@ func printTodos(todos []*Todo, all bool) {
 		if t.Done {
 			status = "  \u2714  "
 		}
-		table.Append([]string{t.ID, t.Title, status})
+		table.Append([]string{t.ID, t.Title, status, t.Age()})
 	}
 	table.Render()
 }
