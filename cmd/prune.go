@@ -11,7 +11,7 @@ var pruneCmd = &cobra.Command{
 	Short: "Deletes only done todos",
 	Args:  cobra.NoArgs,
 	Run: func(_ *cobra.Command, _ []string) {
-		todos, err := readFromFile(filename)
+		todos, err := readFromFile(filepath)
 		if err != nil {
 			log.Fatalf("todos prune: %v\n", err)
 		}
@@ -21,7 +21,7 @@ var pruneCmd = &cobra.Command{
 				res = append(res, t)
 			}
 		}
-		if err := writeToFile(res, filename); err != nil {
+		if err := writeToFile(res, filepath); err != nil {
 			log.Fatalf("todos prune: %v\n", err)
 		}
 	},

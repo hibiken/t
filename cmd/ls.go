@@ -13,7 +13,7 @@ var listCmd = &cobra.Command{
 	Short: "Lists all todos",
 	Args:  cobra.NoArgs,
 	Run: func(_ *cobra.Command, _ []string) {
-		todos, err := readFromFile(filename)
+		todos, err := readFromFile(filepath)
 		if err != nil {
 			log.Fatalf("todos ls: %v\n", err)
 		}

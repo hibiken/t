@@ -15,12 +15,12 @@ var addCmd = &cobra.Command{
 		if err != nil {
 			log.Fatalf("todos add %s: failed to generate ID: %v\n", args[0], err)
 		}
-		todos, err := readFromFile(filename)
+		todos, err := readFromFile(filepath)
 		if err != nil {
 			log.Fatalf("todos add %s: %v\n", args[0], err)
 		}
 		todos = append(todos, &Todo{ID: id, Title: args[0]})
-		if err := writeToFile(todos, filename); err != nil {
+		if err := writeToFile(todos, filepath); err != nil {
 			log.Fatalf("todos add %s: %v\n", args[0], err)
 		}
 	},

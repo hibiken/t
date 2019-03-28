@@ -12,20 +12,20 @@ import (
 )
 
 // writeToFile writes given list of todos to the specified file.
-func writeToFile(todos []*Todo, filename string) error {
+func writeToFile(todos []*Todo, filepath string) error {
 	bytes, err := json.MarshalIndent(todos, "", "  ")
 	if err != nil {
 		return fmt.Errorf("cannot encode todos to JSON: %v", err)
 	}
-	if err := ioutil.WriteFile(filename, bytes, 0644); err != nil {
+	if err := ioutil.WriteFile(filepath, bytes, 0644); err != nil {
 		return err
 	}
 	return nil
 }
 
 // readFromFile reads a file and return a list of todos.
-func readFromFile(filename string) ([]*Todo, error) {
-	bytes, err := ioutil.ReadFile(filename)
+func readFromFile(filepath string) ([]*Todo, error) {
+	bytes, err := ioutil.ReadFile(filepath)
 	if err != nil {
 		return nil, err
 	}

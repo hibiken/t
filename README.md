@@ -11,9 +11,6 @@ go install github.com/hibiken/t
 
 ## Get Started
 ```shell
-# First initialize t in the current directory, just like `git init` :)
-t init
-
 # Add some todos
 t add "First thing I need to do today"
 t add "Second thing I need to do today"

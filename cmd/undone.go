@@ -15,7 +15,7 @@ var undoneCmd = &cobra.Command{
 	Short: "Mark a todo as undone",
 	Args:  cobra.ExactArgs(1),
 	Run: func(_ *cobra.Command, args []string) {
-		todos, err := readFromFile(filename)
+		todos, err := readFromFile(filepath)
 		if err != nil {
 			log.Fatalf("todos undone %s: %v\n", args[0], err)
 		}
@@ -24,7 +24,7 @@ var undoneCmd = &cobra.Command{
 				todo.Done = false
 			}
 		}
-		if err := writeToFile(todos, filename); err != nil {
+		if err := writeToFile(todos, filepath); err != nil {
 			log.Fatalf("todos undone %s: %v\n", args[0], err)
 		}
 	},

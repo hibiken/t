@@ -11,7 +11,7 @@ var doneCmd = &cobra.Command{
 	Short: "Mark a todo as done",
 	Args:  cobra.ExactArgs(1),
 	Run: func(_ *cobra.Command, args []string) {
-		todos, err := readFromFile(filename)
+		todos, err := readFromFile(filepath)
 		if err != nil {
 			log.Fatalf("todos done %s: %v\n", args[0], err)
 		}
@@ -20,7 +20,7 @@ var doneCmd = &cobra.Command{
 				todo.Done = true
 			}
 		}
-		if err := writeToFile(todos, filename); err != nil {
+		if err := writeToFile(todos, filepath); err != nil {
 			log.Fatalf("todos done %s: %v\n", args[0], err)
 		}
 	},

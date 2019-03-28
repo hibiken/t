@@ -2,13 +2,16 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"os"
+	"os/user"
+	"path"
 
 	"github.com/spf13/cobra"
 )
 
-const filename = "todos.json"
+// path to the file the program reads from and writes to.
+// The value gets assinged inside the pre-run function before all commands.
+var filepath string
 
 // Todo is a task to be done.
 type Todo struct {
@@ -17,33 +20,38 @@ type Todo struct {
 	Done  bool
 }
 
-func (t *Todo) String() string {
-	if t.Done {
-		return fmt.Sprintf("%s \u2714\t%s", t.ID, t.Title)
-	}
-	return fmt.Sprintf("%s _\t%s", t.ID, t.Title)
-}
-
 var rootCmd = &cobra.Command{
 	Use:   "t",
 	Short: "t is a CLI application to track your daily todos",
 	Long:  "A simple todo application in command line.",
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		// Do not run this pre-run for the following commands.
-		var whitelist = []string{"init", "help"}
-		for _, c := range whitelist {
-			if cmd.Name() == c {
-				return
-			}
+		usr, err := user.Current()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "fatal: cannot get current user: %v\n", err)
+			os.Exit(1)
 		}
-		// check if a file exist, if not user hasn't run `todos init`.
-		if _, err := os.Stat(filename); err != nil {
-			if os.IsNotExist(err) {
-				fmt.Println("Error: Todos not initialized")
-				fmt.Println("Run 't init' at the root of your project.")
-				os.Exit(1)
-			}
-			log.Fatal(err)
+		filepath = path.Join(usr.HomeDir, "todos.json")
+
+		// check if the file exist
+		if _, err := os.Stat(filepath); err == nil {
+			return // file already exist, go ahead and execute Run function for the command
+		} else if !os.IsNotExist(err) {
+			fmt.Fprintf(os.Stderr, "fatal: cannot get fileinfo : %v\n", err)
+			os.Exit(1)
+		}
+
+		f, err := os.Create(filepath)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "fatal: cannot create file : %v\n", err)
+			os.Exit(1)
+		}
+		if _, err := f.WriteString("[]"); err != nil {
+			fmt.Fprintf(os.Stderr, "fatal: cannot write to %s : %v\n", filepath, err)
+			os.Exit(1)
+		}
+		if err := f.Sync(); err != nil {
+			fmt.Fprintf(os.Stderr, "fatal: cannot write to %s : %v\n", filepath, err)
+			os.Exit(1)
 		}
 	},
 	Run: func(cmd *cobra.Command, args []string) {

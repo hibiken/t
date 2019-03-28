@@ -11,7 +11,7 @@ var deleteCmd = &cobra.Command{
 	Short: "Deletes a todo",
 	Args:  cobra.ExactArgs(1),
 	Run: func(_ *cobra.Command, args []string) {
-		todos, err := readFromFile(filename)
+		todos, err := readFromFile(filepath)
 		if err != nil {
 			log.Fatalf("todos delete %s: %v\n", args[0], err)
 		}
@@ -24,7 +24,7 @@ var deleteCmd = &cobra.Command{
 		if idx != -1 {
 			todos = append(todos[:idx], todos[idx+1:]...)
 		}
-		if err := writeToFile(todos, filename); err != nil {
+		if err := writeToFile(todos, filepath); err != nil {
 			log.Fatalf("todos delete %s: %v\n", args[0], err)
 		}
 	},
