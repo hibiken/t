@@ -28,16 +28,19 @@ type Todo struct {
 }
 
 // NewTodo returns a new todo with a given title.
-func NewTodo(title string) (*Todo, error) {
+func NewTodo(title string, pValue int) (*Todo, error) {
 	id, err := uuid.NewRandom()
 	if err != nil {
 		return nil, err
+	}
+	if pValue < int(p0) || pValue > int(p3) {
+		return nil, fmt.Errorf("invalid priority value %d", pValue)
 	}
 	return &Todo{
 		ID:        id.String()[:3], // Just the first three characters.
 		Title:     title,
 		CreatedAt: time.Now(),
-		Priority:  p2, // by default, the priority is set to p2
+		Priority:  priority(pValue),
 	}, nil
 }
 

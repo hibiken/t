@@ -6,6 +6,8 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var priorityFlag int
+
 var addCmd = &cobra.Command{
 	Use:   "add [string of todo]",
 	Short: "Adds a new todo",
@@ -15,7 +17,7 @@ var addCmd = &cobra.Command{
 		if err != nil {
 			log.Fatalf("todos add %s: %v\n", args[0], err)
 		}
-		t, err := NewTodo(args[0])
+		t, err := NewTodo(args[0], priorityFlag)
 		if err != nil {
 			log.Fatalf("todos add %s: %v\n", args[0], err)
 		}
@@ -28,4 +30,5 @@ var addCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(addCmd)
+	addCmd.Flags().IntVarP(&priorityFlag, "priority", "p", 2, "Specify the priority of todo")
 }
