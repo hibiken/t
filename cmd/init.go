@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"log"
 	"os"
 
@@ -23,6 +24,17 @@ var initCmd = &cobra.Command{
 		}
 		if err := f.Sync(); err != nil {
 			log.Fatal(err)
+		}
+
+		// if gitignore file exists, append filename to it
+		f, err = os.OpenFile(".gitignore", os.O_APPEND|os.O_WRONLY, 0600)
+		if err != nil {
+			return
+		}
+		defer f.Close()
+		if _, err := f.WriteString(filename); err != nil {
+			// write failed, prompt the user to upate .gitignore file manually
+			fmt.Printf("Add %s to .gitignore file", filename)
 		}
 	},
 }
