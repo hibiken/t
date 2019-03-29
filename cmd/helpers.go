@@ -102,3 +102,12 @@ func filter(todos []*Todo, p func(*Todo) bool) []*Todo {
 	}
 	return res
 }
+
+func contains(elements []string, target string) bool {
+	for _, elem := range elements {
+		if elem == target {
+			return true
+		}
+	}
+	return false
+}

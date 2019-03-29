@@ -67,7 +67,7 @@ func init() {
 // Execute runs the rootCmd.
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Printf("rootCmd failed: %v\n", err)
+		fmt.Printf("fatal: %v\n", err)
 		os.Exit(1)
 	}
 }

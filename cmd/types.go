@@ -7,10 +7,6 @@ import (
 	"github.com/google/uuid"
 )
 
-// priority represents urgency of todo.
-// p0 being the most urgent.
-type priority int
-
 // Todo is a task to be done.
 type Todo struct {
 	ID        string
