@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"os/user"
 	"path"
@@ -12,6 +13,9 @@ import (
 // path to the file the program reads from and writes to.
 // The value gets assinged inside the pre-run function before all commands.
 var filepath string
+
+// allFlag used for this root command.
+var allFlag bool
 
 var rootCmd = &cobra.Command{
 	Use:   "t",
@@ -48,8 +52,16 @@ var rootCmd = &cobra.Command{
 		}
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("Hello my todo CLI!")
+		todos, err := readFromFile(filepath)
+		if err != nil {
+			log.Fatalf("todos ls: %v\n", err)
+		}
+		printTodos(todos, allFlag)
 	},
+}
+
+func init() {
+	rootCmd.Flags().BoolVarP(&allFlag, "all", "a", false, "List all todos including completed ones")
 }
 
 // Execute runs the rootCmd.

@@ -16,11 +16,11 @@ t add "First thing I need to do today"
 t add "Second thing I need to do today"
 
 # List todos
-t ls
+t
 
 # To see done todos, pass 'all' flag
-t ls --all
-t ls -a
+t --all
+t -a
 
 # Mark todo as done
 t done [id]
