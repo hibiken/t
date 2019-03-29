@@ -55,14 +55,14 @@ func printTodos(todos []*Todo, all bool) {
 	}
 
 	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader([]string{"ID", "Title", "Status", "Age", "Priority"})
+	table.SetHeader([]string{"ID", "Title", "Age", "Priority", "Status"})
 	table.SetBorder(false)
 	table.SetColumnColor(
 		tablewriter.Colors{tablewriter.Bold, tablewriter.FgHiBlueColor},
 		tablewriter.Colors{tablewriter.Bold, tablewriter.FgCyanColor},
-		tablewriter.Colors{tablewriter.Bold, tablewriter.FgGreenColor},
 		tablewriter.Colors{tablewriter.Bold, tablewriter.FgHiBlackColor},
-		tablewriter.Colors{tablewriter.Bold, tablewriter.FgHiYellowColor})
+		tablewriter.Colors{tablewriter.Bold, tablewriter.FgHiYellowColor},
+		tablewriter.Colors{tablewriter.Bold, tablewriter.FgGreenColor})
 
 	// sort by priority first,
 	// then created_at timestamp if priorities are the same
@@ -82,7 +82,12 @@ func printTodos(todos []*Todo, all bool) {
 		if t.Done {
 			status = "   \u2714   "
 		}
-		table.Append([]string{t.ID, t.Title, status, t.Age(), strconv.Itoa(t.Priority)})
+		table.Append([]string{
+			t.ID,
+			t.Title,
+			t.Age(),
+			strconv.Itoa(t.Priority),
+			status})
 	}
 	table.Render()
 }
