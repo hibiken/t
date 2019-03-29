@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"sort"
 	"strconv"
 
 	"github.com/olekukonko/tablewriter"
@@ -62,6 +63,16 @@ func printTodos(todos []*Todo, all bool) {
 		tablewriter.Colors{tablewriter.Bold, tablewriter.FgGreenColor},
 		tablewriter.Colors{tablewriter.Bold, tablewriter.FgHiBlackColor},
 		tablewriter.Colors{tablewriter.Bold, tablewriter.FgHiYellowColor})
+
+	// sort by priority first,
+	// then created_at timestamp if priorities are the same
+	sort.Slice(todos, func(i, j int) bool {
+		t1, t2 := todos[i], todos[j]
+		if t1.Priority == t2.Priority {
+			return t1.CreatedAt.Before(t2.CreatedAt)
+		}
+		return t1.Priority < t2.Priority
+	})
 
 	for _, t := range todos {
 		if !all && t.Done {
