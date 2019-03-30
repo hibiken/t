@@ -1,27 +1,28 @@
 package cmd
 
 import (
-	"log"
+	"fmt"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
 
 var doneCmd = &cobra.Command{
-	Use:   "done [id]",
-	Short: "Mark a todo as done",
-	Args:  cobra.ExactArgs(1),
-	Run: func(_ *cobra.Command, args []string) {
+	Use:   "done [ids]",
+	Short: "Mark todos as done",
+	Args:  cobra.MinimumNArgs(1),
+	Run: func(_ *cobra.Command, ids []string) {
 		todos, err := readFromFile(filepath)
 		if err != nil {
-			log.Fatalf("todos done %s: %v\n", args[0], err)
+			fmt.Printf("fatal: todos done %s: %v\n", strings.Join(ids, " "), err)
 		}
-		for _, todo := range todos {
-			if todo.ID == args[0] {
-				todo.Done = true
+		for _, t := range todos {
+			if contains(ids, t.ID) {
+				t.Done = true
 			}
 		}
 		if err := writeToFile(todos, filepath); err != nil {
-			log.Fatalf("todos done %s: %v\n", args[0], err)
+			fmt.Printf("fatal: todos done %s: %v\n", strings.Join(ids, " "), err)
 		}
 	},
 }
