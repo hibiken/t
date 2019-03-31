@@ -30,13 +30,22 @@ func NewTodo(title string, priority int) (*Todo, error) {
 	}, nil
 }
 
-// Age returns a string representation of its age.
-// if it's less than 1 day old => less than a day
-// if older than a day => xxx days old
-func (t *Todo) Age() string {
-	d := time.Since(t.CreatedAt)
-	if d.Hours() < 24 {
-		return "less than a day"
+// Created returns a string that indicates the time t was created.
+func (t *Todo) Created() string {
+	year, month, day := time.Now().Date()
+	createdY, createdM, createdD := t.CreatedAt.Date()
+	if year != createdY {
+		return fmt.Sprintf("%d years ago", year-createdY)
 	}
-	return fmt.Sprintf("%d days old", int(d.Hours()/24))
+	if month != createdM {
+		return fmt.Sprintf("%d months ago", month-createdM)
+	}
+	switch day - createdD {
+	case 0:
+		return "today"
+	case 1:
+		return "yesterday"
+	default:
+		return fmt.Sprintf("%d days ago", day-createdD)
+	}
 }
