@@ -30,22 +30,25 @@ func NewTodo(title string, priority int) (*Todo, error) {
 	}, nil
 }
 
-// Created returns a string that indicates the time t was created.
-func (t *Todo) Created() string {
-	year, month, day := time.Now().Date()
-	createdY, createdM, createdD := t.CreatedAt.Date()
-	if year != createdY {
-		return fmt.Sprintf("%d years ago", year-createdY)
+// CreatedTimeInWords returns a string that indicates the time t was created.
+func (t *Todo) CreatedTimeInWords() string {
+	const (
+		Day   = time.Hour * 24
+		Month = Day * 30 // approximate 30 days
+		Year  = Month * 12
+	)
+	d := time.Since(t.CreatedAt)
+	if d > Year {
+		return fmt.Sprintf("%d years ago", int(d/Year))
 	}
-	if month != createdM {
-		return fmt.Sprintf("%d months ago", month-createdM)
+	if d > Month {
+		return fmt.Sprintf("%d months ago", int(d/Month))
 	}
-	switch day - createdD {
-	case 0:
-		return "today"
-	case 1:
+	if d > 2*Day {
+		return fmt.Sprintf("%d days ago", int(d/Day))
+	}
+	if d > Day {
 		return "yesterday"
-	default:
-		return fmt.Sprintf("%d days ago", day-createdD)
 	}
+	return "today"
 }

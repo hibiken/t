@@ -85,7 +85,7 @@ func printTodos(todos []*Todo, all bool) {
 		table.Append([]string{
 			t.ID,
 			t.Title,
-			t.Created(),
+			t.CreatedTimeInWords(),
 			strconv.Itoa(t.Priority),
 			status})
 	}
