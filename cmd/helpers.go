@@ -111,3 +111,14 @@ func contains(elements []string, target string) bool {
 	}
 	return false
 }
+
+func findByID(todos []*Todo, id string) *Todo {
+	var t *Todo
+	for _, todo := range todos {
+		if todo.ID == id {
+			t = todo
+			break
+		}
+	}
+	return t
+}
