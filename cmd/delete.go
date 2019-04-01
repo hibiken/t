@@ -1,9 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-	"strings"
-
 	"github.com/spf13/cobra"
 )
 
@@ -14,7 +11,7 @@ var deleteCmd = &cobra.Command{
 	Run: func(_ *cobra.Command, ids []string) {
 		todos, err := readFromFile(filepath)
 		if err != nil {
-			fmt.Printf("fatal: todos delete %s: %v\n", strings.Join(ids, " "), err)
+			printErrorAndExit(err)
 		}
 
 		res := []*Todo{}
@@ -24,7 +21,7 @@ var deleteCmd = &cobra.Command{
 			}
 		}
 		if err := writeToFile(res, filepath); err != nil {
-			fmt.Printf("fatal: todos delete %s: %v\n", strings.Join(ids, " "), err)
+			printErrorAndExit(err)
 		}
 	},
 }

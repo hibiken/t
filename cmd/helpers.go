@@ -122,3 +122,8 @@ func findByID(todos []*Todo, id string) *Todo {
 	}
 	return t
 }
+
+func printErrorAndExit(msg interface{}) {
+	fmt.Println("Error:", msg)
+	os.Exit(1)
+}

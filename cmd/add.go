@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"log"
-
 	"github.com/spf13/cobra"
 )
 
@@ -15,15 +13,15 @@ var addCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		todos, err := readFromFile(filepath)
 		if err != nil {
-			log.Fatalf("todos add %s: %v\n", args[0], err)
+			printErrorAndExit(err)
 		}
 		t, err := NewTodo(args[0], priorityFlag)
 		if err != nil {
-			log.Fatalf("todos add %s: %v\n", args[0], err)
+			printErrorAndExit(err)
 		}
 		todos = append(todos, t)
 		if err := writeToFile(todos, filepath); err != nil {
-			log.Fatalf("todos add %s: %v\n", args[0], err)
+			printErrorAndExit(err)
 		}
 	},
 }

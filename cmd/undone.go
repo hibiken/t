@@ -1,9 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-	"strings"
-
 	"github.com/spf13/cobra"
 )
 
@@ -18,7 +15,7 @@ var undoneCmd = &cobra.Command{
 	Run: func(_ *cobra.Command, ids []string) {
 		todos, err := readFromFile(filepath)
 		if err != nil {
-			fmt.Printf("fatal: todos undone %s: %v\n", strings.Join(ids, " "), err)
+			printErrorAndExit(err)
 		}
 		for _, t := range todos {
 			if contains(ids, t.ID) {
@@ -26,7 +23,7 @@ var undoneCmd = &cobra.Command{
 			}
 		}
 		if err := writeToFile(todos, filepath); err != nil {
-			fmt.Printf("fatal: todos undone %s: %v\n", strings.Join(ids, " "), err)
+			printErrorAndExit(err)
 		}
 	},
 }

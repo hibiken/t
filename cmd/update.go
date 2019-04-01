@@ -21,8 +21,7 @@ var updateCmd = &cobra.Command{
 		)
 		todos, err := readFromFile(filepath)
 		if err != nil {
-			fmt.Printf("fatal: error reading from file: %v\n", err)
-			os.Exit(1)
+			printErrorAndExit(err)
 		}
 		printTodos(todos, false) // No need to show done todos
 		scanner := bufio.NewScanner(os.Stdin)
@@ -60,8 +59,7 @@ var updateCmd = &cobra.Command{
 			break
 		}
 		if err := writeToFile(todos, filepath); err != nil {
-			fmt.Printf("fatal: error writing to file: %v\n", err)
-			os.Exit(1)
+			printErrorAndExit(err)
 		}
 	},
 }

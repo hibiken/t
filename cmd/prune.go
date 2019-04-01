@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"log"
-
 	"github.com/spf13/cobra"
 )
 
@@ -13,7 +11,7 @@ var pruneCmd = &cobra.Command{
 	Run: func(_ *cobra.Command, _ []string) {
 		todos, err := readFromFile(filepath)
 		if err != nil {
-			log.Fatalf("todos prune: %v\n", err)
+			printErrorAndExit(err)
 		}
 		var res []*Todo
 		for _, t := range todos {
@@ -22,7 +20,7 @@ var pruneCmd = &cobra.Command{
 			}
 		}
 		if err := writeToFile(res, filepath); err != nil {
-			log.Fatalf("todos prune: %v\n", err)
+			printErrorAndExit(err)
 		}
 	},
 }

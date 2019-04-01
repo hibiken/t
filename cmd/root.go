@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"fmt"
-	"log"
 	"os"
 	"os/user"
 	"path"
@@ -24,8 +22,7 @@ var rootCmd = &cobra.Command{
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
 		usr, err := user.Current()
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "fatal: cannot get current user: %v\n", err)
-			os.Exit(1)
+			printErrorAndExit(err)
 		}
 		filepath = path.Join(usr.HomeDir, "todos.json")
 
@@ -33,28 +30,24 @@ var rootCmd = &cobra.Command{
 		if _, err := os.Stat(filepath); err == nil {
 			return // file already exist, go ahead and execute Run function for the command
 		} else if !os.IsNotExist(err) {
-			fmt.Fprintf(os.Stderr, "fatal: cannot get fileinfo : %v\n", err)
-			os.Exit(1)
+			printErrorAndExit(err)
 		}
 
 		f, err := os.Create(filepath)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, "fatal: cannot create file : %v\n", err)
-			os.Exit(1)
+			printErrorAndExit(err)
 		}
 		if _, err := f.WriteString("[]"); err != nil {
-			fmt.Fprintf(os.Stderr, "fatal: cannot write to %s : %v\n", filepath, err)
-			os.Exit(1)
+			printErrorAndExit(err)
 		}
 		if err := f.Sync(); err != nil {
-			fmt.Fprintf(os.Stderr, "fatal: cannot write to %s : %v\n", filepath, err)
-			os.Exit(1)
+			printErrorAndExit(err)
 		}
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		todos, err := readFromFile(filepath)
 		if err != nil {
-			log.Fatalf("todos ls: %v\n", err)
+			printErrorAndExit(err)
 		}
 		printTodos(todos, allFlag)
 	},
@@ -67,7 +60,6 @@ func init() {
 // Execute runs the rootCmd.
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		fmt.Printf("fatal: %v\n", err)
-		os.Exit(1)
+		printErrorAndExit(err)
 	}
 }

@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"log"
-
 	"github.com/spf13/cobra"
 )
 
@@ -12,7 +10,7 @@ var clearallCmd = &cobra.Command{
 	Args:  cobra.NoArgs,
 	Run: func(_ *cobra.Command, _ []string) {
 		if err := writeToFile([]*Todo{}, filepath); err != nil {
-			log.Fatalf("todos clearall: %v\n", err)
+			printErrorAndExit(err)
 		}
 	},
 }
