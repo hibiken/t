@@ -12,9 +12,6 @@ import (
 // The value gets assinged inside the pre-run function before all commands.
 var filepath string
 
-// allFlag used for this root command.
-var allFlag bool
-
 var rootCmd = &cobra.Command{
 	Use:   "t",
 	Short: "t is a CLI application to track your daily todos",
@@ -44,22 +41,9 @@ var rootCmd = &cobra.Command{
 			printErrorAndExit(err)
 		}
 	},
-	Run: func(cmd *cobra.Command, args []string) {
-		todos, err := readFromFile(filepath)
-		if err != nil {
-			printErrorAndExit(err)
-		}
-		printTodos(todos, allFlag)
-	},
-}
-
-func init() {
-	rootCmd.Flags().BoolVarP(&allFlag, "all", "a", false, "List all todos including completed ones")
 }
 
 // Execute runs the rootCmd.
 func Execute() {
-	if err := rootCmd.Execute(); err != nil {
-		printErrorAndExit(err)
-	}
+	rootCmd.Execute()
 }
