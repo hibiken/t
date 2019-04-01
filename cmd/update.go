@@ -10,9 +10,10 @@ import (
 )
 
 var updateCmd = &cobra.Command{
-	Use:   "update",
-	Short: "Updates a todo",
-	Args:  cobra.NoArgs,
+	Use:     "update",
+	Aliases: []string{"modify"},
+	Short:   "Updates a todo",
+	Args:    cobra.NoArgs,
 	Run: func(cmd *cobra.Command, args []string) {
 		const (
 			idPrompt           = "Enter todo ID to update: "
