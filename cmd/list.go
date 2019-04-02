@@ -22,7 +22,14 @@ var listCmd = &cobra.Command{
 		if err != nil {
 			printErrorAndExit(err)
 		}
-		sort.Sort(byPriority(todos))
+		// Sort todos by Priority (primary sort key) and CreatedAt (secondary sort key).
+		sort.Slice(todos, func(i, j int) bool {
+			x, y := todos[i], todos[j]
+			if x.Priority != y.Priority {
+				return x.Priority < y.Priority
+			}
+			return x.CreatedAt.After(y.CreatedAt)
+		})
 		printTodos(todos, allFlag)
 	},
 }
@@ -31,12 +38,6 @@ func init() {
 	rootCmd.AddCommand(listCmd)
 	listCmd.Flags().BoolVarP(&allFlag, "all", "a", false, "List all todos including completed ones")
 }
-
-type byPriority []*Todo
-
-func (x byPriority) Len() int           { return len(x) }
-func (x byPriority) Less(i, j int) bool { return x[i].Priority < x[j].Priority }
-func (x byPriority) Swap(i, j int)      { x[i], x[j] = x[j], x[i] }
 
 // printTodos prints todos. If all is false, it prints only the items with Done
 // field set to false, otherwise it prints all items in the slice.
