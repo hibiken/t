@@ -24,7 +24,7 @@ t ls --all
 t ls -a
 
 # Mark todo as done
-t done [id]
+t done
 
 # Mark todo as undone
 t undone [id]
