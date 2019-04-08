@@ -50,10 +50,9 @@ func printTodos(todos []*Todo, all bool) {
 	}
 
 	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader([]string{"ID", "Title", "Created", "Priority", "Status"})
+	table.SetHeader([]string{"Title", "Created", "Priority", "Status"})
 	table.SetBorder(false)
 	table.SetColumnColor(
-		tablewriter.Colors{tablewriter.Bold, tablewriter.FgHiBlueColor},
 		tablewriter.Colors{tablewriter.Bold, tablewriter.FgCyanColor},
 		tablewriter.Colors{tablewriter.Bold, tablewriter.FgHiBlackColor},
 		tablewriter.Colors{tablewriter.Bold, tablewriter.FgHiYellowColor},
@@ -68,7 +67,6 @@ func printTodos(todos []*Todo, all bool) {
 			status = "   \u2714   "
 		}
 		table.Append([]string{
-			t.ID,
 			t.Title,
 			t.CreatedTimeInWords(),
 			strconv.Itoa(t.Priority),
