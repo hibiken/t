@@ -1,22 +1,35 @@
 package cmd
 
 import (
+	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 )
 
 var deleteCmd = &cobra.Command{
-	Use:   "delete [ids]",
+	Use:   "delete",
 	Short: "Deletes a todo",
-	Args:  cobra.MinimumNArgs(1),
-	Run: func(_ *cobra.Command, ids []string) {
+	Run: func(_ *cobra.Command, _ []string) {
 		todos, err := readFromFile(filepath)
+		if err != nil {
+			printErrorAndExit(err)
+		}
+
+		filtered := filter(todos, func(t *Todo) bool { return !t.Done })
+		sortTodos(filtered)
+		prompt := promptui.Select{
+			Label:    "Select todo to delete",
+			Items:    titles(filtered),
+			HideHelp: true,
+		}
+
+		_, selected, err := prompt.Run()
 		if err != nil {
 			printErrorAndExit(err)
 		}
 
 		res := []*Todo{}
 		for _, t := range todos {
-			if !contains(ids, t.ID) {
+			if t.Title != selected {
 				res = append(res, t)
 			}
 		}

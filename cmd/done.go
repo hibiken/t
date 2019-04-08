@@ -8,7 +8,7 @@ import (
 var doneCmd = &cobra.Command{
 	Use:   "done",
 	Short: "Mark todo as done",
-	Run: func(_ *cobra.Command, ids []string) {
+	Run: func(_ *cobra.Command, _ []string) {
 		todos, err := readFromFile(filepath)
 		if err != nil {
 			printErrorAndExit(err)
