@@ -3,7 +3,6 @@ package cmd
 import (
 	"fmt"
 	"os"
-	"sort"
 	"strconv"
 
 	"github.com/olekukonko/tablewriter"
@@ -22,14 +21,7 @@ var listCmd = &cobra.Command{
 		if err != nil {
 			printErrorAndExit(err)
 		}
-		// Sort todos by Priority (primary sort key) and CreatedAt (secondary sort key).
-		sort.Slice(todos, func(i, j int) bool {
-			x, y := todos[i], todos[j]
-			if x.Priority != y.Priority {
-				return x.Priority < y.Priority
-			}
-			return x.CreatedAt.After(y.CreatedAt)
-		})
+		sortTodos(todos)
 		printTodos(todos, allFlag)
 	},
 }

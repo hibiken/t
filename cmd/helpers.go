@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"sort"
 )
 
 // writeToFile writes given list of todos to the specified file.
@@ -61,6 +62,17 @@ func findByID(todos []*Todo, id string) *Todo {
 		}
 	}
 	return t
+}
+
+// Sort todos by Priority (primary sort key) and CreatedAt (secondary sort key).
+func sortTodos(todos []*Todo) {
+	sort.Slice(todos, func(i, j int) bool {
+		x, y := todos[i], todos[j]
+		if x.Priority != y.Priority {
+			return x.Priority < y.Priority
+		}
+		return x.CreatedAt.After(y.CreatedAt)
+	})
 }
 
 func printErrorAndExit(msg interface{}) {

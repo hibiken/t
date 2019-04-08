@@ -15,6 +15,7 @@ var doneCmd = &cobra.Command{
 		}
 
 		filtered := filter(todos, func(t *Todo) bool { return !t.Done })
+		sortTodos(filtered)
 		prompt := promptui.Select{
 			Label:    "Select todo to mark as done",
 			Items:    titles(filtered),
