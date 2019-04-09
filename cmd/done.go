@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 )
@@ -15,6 +17,11 @@ var doneCmd = &cobra.Command{
 		}
 
 		filtered := filter(todos, func(t *Todo) bool { return !t.Done })
+		if len(filtered) == 0 {
+			fmt.Println("You have no todos!")
+			return
+		}
+
 		sortTodos(filtered)
 		prompt := promptui.Select{
 			Label:    "Select todo to mark as done",
