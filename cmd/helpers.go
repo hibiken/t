@@ -75,6 +75,15 @@ func sortTodos(todos []*Todo) {
 	})
 }
 
+func any(todos []*Todo, fn func(*Todo) bool) bool {
+	for _, t := range todos {
+		if fn(t) {
+			return true
+		}
+	}
+	return false
+}
+
 func printErrorAndExit(msg interface{}) {
 	fmt.Println("Error:", msg)
 	os.Exit(1)

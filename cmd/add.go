@@ -15,6 +15,14 @@ var addCmd = &cobra.Command{
 	Use:   "add",
 	Short: "Adds a new todo",
 	Run: func(cmd *cobra.Command, args []string) {
+		todos, err := readFromFile(filepath)
+		if err != nil {
+			printErrorAndExit(err)
+		}
+		titles := make(map[string]bool) // set of titles
+		for _, t := range todos {
+			titles[t.Title] = true
+		}
 		templates := &promptui.PromptTemplates{
 			Prompt:  "{{ . }} ",
 			Valid:   "{{ . | green }} ",
@@ -28,6 +36,9 @@ var addCmd = &cobra.Command{
 			Validate: func(input string) error {
 				if len(strings.TrimSpace(input)) == 0 {
 					return errors.New("empty string")
+				}
+				if titles[input] {
+					return errors.New("already exist")
 				}
 				return nil
 			},
@@ -45,11 +56,6 @@ var addCmd = &cobra.Command{
 				}
 				return nil
 			},
-		}
-
-		todos, err := readFromFile(filepath)
-		if err != nil {
-			printErrorAndExit(err)
 		}
 
 		title, err := titlePrompt.Run()
