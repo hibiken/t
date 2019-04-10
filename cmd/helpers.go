@@ -64,6 +64,17 @@ func findByID(todos []*Todo, id string) *Todo {
 	return t
 }
 
+func findByTitle(todos []*Todo, title string) *Todo {
+	var t *Todo
+	for _, todo := range todos {
+		if todo.Title == title {
+			t = todo
+			break
+		}
+	}
+	return t
+}
+
 // Sort todos by Priority (primary sort key) and CreatedAt (secondary sort key).
 func sortTodos(todos []*Todo) {
 	sort.Slice(todos, func(i, j int) bool {
