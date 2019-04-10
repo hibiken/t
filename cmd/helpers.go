@@ -84,6 +84,14 @@ func any(todos []*Todo, fn func(*Todo) bool) bool {
 	return false
 }
 
+func titles(todos []*Todo) []string {
+	var res []string
+	for _, t := range todos {
+		res = append(res, t.Title)
+	}
+	return res
+}
+
 func printErrorAndExit(msg interface{}) {
 	fmt.Println("Error:", msg)
 	os.Exit(1)

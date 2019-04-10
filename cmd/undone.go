@@ -1,6 +1,9 @@
 package cmd
 
 import (
+	"fmt"
+
+	"github.com/manifoldco/promptui"
 	"github.com/spf13/cobra"
 )
 
@@ -9,16 +12,34 @@ func init() {
 }
 
 var undoneCmd = &cobra.Command{
-	Use:   "undone [ids]",
+	Use:   "undone",
 	Short: "Mark todos as undone",
-	Args:  cobra.MinimumNArgs(1),
-	Run: func(_ *cobra.Command, ids []string) {
+	Run: func(_ *cobra.Command, _ []string) {
 		todos, err := readFromFile(filepath)
 		if err != nil {
 			printErrorAndExit(err)
 		}
+
+		filtered := filter(todos, func(t *Todo) bool { return t.Done })
+		if len(filtered) == 0 {
+			fmt.Println("You have no completed todos!")
+			return
+		}
+
+		sortTodos(filtered)
+		prompt := promptui.Select{
+			Label:    "Select todo to mark as undone",
+			Items:    titles(filtered),
+			HideHelp: true,
+		}
+
+		_, selected, err := prompt.Run()
+		if err != nil {
+			printErrorAndExit(err)
+		}
+
 		for _, t := range todos {
-			if contains(ids, t.ID) {
+			if t.Title == selected {
 				t.Done = false
 			}
 		}

@@ -48,11 +48,3 @@ var doneCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(doneCmd)
 }
-
-func titles(todos []*Todo) []string {
-	var res []string
-	for _, t := range todos {
-		res = append(res, t.Title)
-	}
-	return res
-}
